@@ -65,13 +65,13 @@ void compress_buffer(void* buf, size_t size)
         x_init();
         void *end = x_compress(buf, size, tmp_buf);
         u32 compressed_size = (char*)end - (char*)tmp_buf;
-        if (compressed_size > size + RESERVED_SIZE_BYTES) {
+        if (compressed_size > size - RESERVED_SIZE_BYTES) {
             pr_err("Error occurs with x-compressor.\n");
         } else {
             memcpy(tmp_buf, buf + RESERVED_SIZE_BYTES, compressed_size);
             *((u32*)buf) = compressed_size;
-            vfree(tmp_buf);
         }
+        vfree(tmp_buf);
     }
 }
 
